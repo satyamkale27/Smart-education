@@ -1,80 +1,151 @@
 "use client";
-import axios from 'axios'
-import React, { useState } from 'react'
+import axios from "axios";
+import React, { useState } from "react";
 
-import Cookies from 'js-cookie'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { API } from '../../config'
-import { useAuthContext } from '../components/AuthWrapper';
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { API } from "../../config";
+import { useAuthContext } from "../components/AuthWrapper";
+import { IoMdAdd } from "react-icons/io";
 
 const Signup = () => {
-	const [login, setLogin] = useState({
-		email: "",
-		password: "",
-		fullname: "",
-		dp: "",
-	})
-	const router = useRouter()
-	const { setAuth } = useAuthContext()
+  const [login, setLogin] = useState({
+    email: "",
+    password: "",
+    fullname: "",
+    dp: "",
+    role: "",
+  });
+  const router = useRouter();
+  const { setAuth } = useAuthContext();
 
-	const sendData = async (e) => {
-		e.preventDefault()
-		if (!login.email || !login.dp || !login.fullname || !login.password) {
-			return
-		}
-		try {
-			const data = { email: login.email, password: login.password, dp: login.dp, fullname: login.fullname }
-			const res = await axios.post(`${API}/createuser`, data)
-			console.log(res.data)
-			if (res.data.success) {
-				Cookies.set("access_token", res.data.access_token)
-				Cookies.set("refresh_token", res.data.refresh_token)
-				setAuth(true)
-				router.push("/")
-			}
-		} catch (error) {
-			console.log(error)
-		}
-	}
+  const sendData = async (e) => {
+    e.preventDefault();
+    if (!login.email || !login.dp || !login.fullname || !login.password) {
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("email", login.email);
+      formData.append("image", login.dp);
+      formData.append("fullname", login.fullname);
+      formData.append("password", login.password);
+      formData.append("role", login.role);
 
-	return (
-		<section className="bg-gray-50 dark:bg-gray-900">
-			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      const res = await axios.post(`${API}/createuser`, formData);
+      console.log(res.data);
+      if (res.data.success) {
+        Cookies.set("access_token", res.data.access_token);
+        Cookies.set("refresh_token", res.data.refresh_token);
+        setAuth(true);
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-				<div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-							Sign in to your account
-						</h1>
-						<form onSubmit={sendData} className="space-y-4 md:space-y-6" action="#">
-							<div>
-								<label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
-								<input value={login.fullname} onChange={(e) => setLogin({ ...login, fullname: e.target.value })} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ayush Dixit" required="" />
-							</div>
-							<div>
-								<label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Dp</label>
-								<input value={login.dp} onChange={(e) => setLogin({ ...login, dp: e.target.value })} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="https://img.com" required="" />
-							</div>
-							<div>
-								<label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-								<input value={login.email} onChange={(e) => setLogin({ ...login, email: e.target.value })} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
-							</div>
-							<div>
-								<label for="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-								<input value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
-							</div>
+  return (
+    <div className="bg-grey-lighter min-h-screen flex flex-col">
+      <div className="container max-w-md mx-auto flex-1 flex flex-col items-center justify-center px-2">
+        <div className="bg-white px-6 py-8  border-2 rounded-xl text-black w-full">
+          <h1 className="mb-8 text-3xl text-center">Sign up</h1>
+          <div className="flex justify-center items-center mb-6">
+            <label
+              htmlFor="image"
+              className="w-[80px] h-[80px] overflow-hidden border flex justify-center items-center rounded-full"
+            >
+              {login.dp ? (
+                <div className="w-[80px] h-[80px]">
+                  <img
+                    src={URL.createObjectURL(login.dp)}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex justify-center items-center">
+                  <IoMdAdd />
+                </div>
+              )}
+            </label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => setLogin({ ...login, dp: e.target.files[0] })}
+            />
+          </div>
+          <input
+            type="text"
+            value={login.fullname}
+            onChange={(e) => setLogin({ ...login, fullname: e.target.value })}
+            className="block border border-grey-light w-full p-3 rounded mb-4"
+            name="fullname"
+            placeholder="Full Name"
+          />
 
-							<button type="submit" className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-600">Sign up</button>
-							<p className="text-sm font-light text-gray-500 dark:text-gray-400">
-								Don't have an account yet?<Link href={"/login"} className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign in</Link>
-							</p>
-						</form>
-					</div>
-				</div>
-			</div>
-		</section>
-	)
-}
+          <input
+            type="text"
+            value={login.email}
+            onChange={(e) => setLogin({ ...login, email: e.target.value })}
+            className="block border border-grey-light w-full p-3 rounded mb-4"
+            name="email"
+            placeholder="Email"
+          />
 
-export default Signup
+          <input
+            type="password"
+            value={login.password}
+            onChange={(e) => setLogin({ ...login, password: e.target.value })}
+            className="block border border-grey-light w-full p-3 rounded mb-4"
+            name="password"
+            placeholder="Password"
+          />
+
+          <div className="flex my-2 items-center gap-3">
+            <div className="flex items-center gap-1">
+              <input
+                onChange={() => setLogin({ ...login, role: "teacher" })}
+                type="radio"
+                name="category"
+                id="teacher"
+              />
+              <label htmlFor="teacher">Teacher</label>
+            </div>
+            <div className="flex items-center gap-1">
+              <input
+                onChange={() => setLogin({ ...login, role: "student" })}
+                type="radio"
+                name="category"
+                id="student"
+              />
+              <label htmlFor="student">Student</label>
+            </div>
+          </div>
+
+          <button
+            onClick={sendData}
+            type="submit"
+            className="w-full text-center py-3 rounded bg-green text-white bg-green-600 focus:outline-none my-1"
+          >
+            Create Account
+          </button>
+          <div className="text-grey-dark text-center mt-6">
+            Already have an account?
+            <Link
+              className="no-underline border-b border-blue text-blue"
+              href="/login"
+            >
+              Log in
+            </Link>
+            .
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Signup;

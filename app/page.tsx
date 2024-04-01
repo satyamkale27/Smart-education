@@ -1,9 +1,18 @@
 import Navbar from "@/app/components/Navbar";
+import Link from "next/link";
+import { RiRobot2Fill } from "react-icons/ri";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
+      <div className="absolute right-12 bottom-12">
+        <Link href={"/chat-bot"}>
+          <RiRobot2Fill className="text-6xl" />
+        </Link>
+      </div>
+      <div>
+        <Navbar />
+      </div>
     </>
   );
 }

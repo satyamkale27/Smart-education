@@ -18,7 +18,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (auth) {
-      const newSocket = io("http://localhost:5000", {
+      const newSocket = io("http://localhost:8000", {
         query: { userId: data.id },
         transports: ["websocket"],
       });
