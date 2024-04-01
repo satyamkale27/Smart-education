@@ -20,7 +20,7 @@ const Navbar = () => {
             <Link href="/courses">View Courses</Link>
           )}
 
-          <Link href="/chatbot">Chatbot</Link>
+          <Link href="/chat-bot">Chatbot</Link>
           <Link href="/forum">forum</Link>
           <ThemeToggle />
         </div>

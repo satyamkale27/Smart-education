@@ -28,6 +28,8 @@ const page = () => {
         });
     }
   }, [data]);
+
+  console.log(data.dp);
   return (
     <>
       <div className="w-full h-full">
