@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "../components/AuthWrapper";
 import Chats from "../components/Chats";
-import { API } from "../../config";
+import { API, url } from "../../config";
+import { formatTime } from "../components/useful";
 
 const page = () => {
   const { data } = useAuthContext();
@@ -18,9 +19,11 @@ const page = () => {
       axios
         .get(`${API}/v1/getUsers/${data.id}`)
         .then((res) => {
+          console.log(res.data.users);
           setUsers(res.data.users);
+
           setName(res.data.users[0].fullname);
-          setImage(res.data.users[0].dp);
+          setImage(url + res.data.users[0].dp);
           setReceiverId(res.data.users[0]._id);
         })
         .catch((e) => {
@@ -112,21 +115,29 @@ const page = () => {
                     <div
                       onClick={() => {
                         setShow(true);
-                        setReceiverId(d?._id), setImage(d?.dp);
+                        setReceiverId(d?._id), setImage(url + d?.dp);
                         setName(d?.fullname);
                       }}
                       className="px-3 flex items-center bg-grey-light cursor-pointer"
                     >
                       <div>
-                        <img className="h-12 w-12 rounded-full" src={d?.dp} />
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src={url + d?.dp}
+                        />
                       </div>
                       <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
                         <div className="flex items-bottom justify-between">
                           <p className="text-grey-darkest">{d?.fullname}</p>
-                          <p className="text-xs text-grey-darkest">12:45 pm</p>
+                          <p className="text-xs text-grey-darkest">
+                            {d?.message?.createdAt &&
+                              formatTime(d?.message?.createdAt)}
+                          </p>
                         </div>
                         <p className="text-grey-dark mt-1 text-sm">
-                          Get Andrés on this movie ASAP!
+                          {d?.message?._id
+                            ? d?.message?.message
+                            : d?.message?.message + ` ${d?.fullname}`}
                         </p>
                       </div>
                     </div>

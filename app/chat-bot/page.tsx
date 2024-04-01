@@ -8,10 +8,6 @@ const page = () => {
   const [messages, setMessages] = useState([]);
 
   const getResponse = async () => {
-    // const response = await fetch(`${API}/prompt/${text}`);
-    // const data = await response.json();
-    // console.log("data", data);
-    // const res = await axios.get(`${url}prompt/${text}`);
     const res = await axios.get(`http://localhost:8000/prompt/${text}`);
     console.log(res.data);
     setMessages([
