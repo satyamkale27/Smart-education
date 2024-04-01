@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import { cn } from "../lib/utils";
-import Navbar from "../components/Navbar";
 import { AuthContextProvider } from "./components/AuthWrapper";
 import { SocketContextProvider } from "./components/SocketWrapper";
 import { Provider } from "../components/providers";

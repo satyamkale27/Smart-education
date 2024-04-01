@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { API } from "../../config";
+import { API, url } from "../../config";
 import { useSocketContext } from "./SocketWrapper";
 import Input from "./Input";
 import { MdArrowBackIosNew } from "react-icons/md";
@@ -55,9 +55,15 @@ const Chats = ({ id, receiverId, show, setShow, name, image }) => {
       return;
     }
     try {
+      const formdata = new FormData();
+      if (typeof message === "string") {
+        formdata.append("msg", message);
+      } else {
+        formdata.append("image", message);
+      }
       const res = await axios.post(
         `${API}/chats/sendmessage/${id}/${receiverId}`,
-        { msg: message }
+        formdata
       );
       console.log(res.data);
       if (res.data.success) {
@@ -170,7 +176,20 @@ const Chats = ({ id, receiverId, show, setShow, name, image }) => {
                 className="rounded py-2 px-3"
                 style={{ backgroundColor: "#F2F2F2" }}
               >
-                <p className="text-sm mt-1">{d?.message}</p>
+                <p className="text-sm mt-1">
+                  {d?.content?.content ? (
+                    d.content.type.startsWith("image") ? (
+                      <img
+                        src={url + d?.content?.content}
+                        className="max-w-[300px]"
+                      />
+                    ) : (
+                      <video controls src={url + d?.content?.content}></video>
+                    )
+                  ) : (
+                    d?.message
+                  )}
+                </p>
                 <p className="text-right text-xs text-grey-dark mt-1">
                   {formatTime(d?.createdAt)}
                 </p>
