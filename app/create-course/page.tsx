@@ -35,7 +35,7 @@ const page = () => {
       const res = await axios.post(`${API}/createCourse`, formData);
       console.log(res.data);
       if (res.data.success) {
-        router.push(`/courses/${data?.id}/${res.data?.id}`);
+        // router.push(`/courses/${data?.id}/${res.data?.id}`);
       }
     } catch (error) {
       console.log(error);

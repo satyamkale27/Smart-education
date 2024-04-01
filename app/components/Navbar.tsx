@@ -1,8 +1,10 @@
+"use client";
 import Link from "next/link";
 import React from "react";
-import { ThemeToggle } from "./ThemeToogle";
-type props = {};
-const Navbar = (props: props) => {
+import { ThemeToggle } from "../../components/ThemeToogle";
+import { useAuthContext } from "../components/AuthWrapper";
+const Navbar = () => {
+  const { data } = useAuthContext();
   return (
     <nav className=" bg-white dark:bg-gray-950 h-full py-2 border-b border-zinc-300">
       <div className="flex items-center justify-center py-4 gap-2 px-8 mx-auto sm:justify-between max-w-7xl">
@@ -12,7 +14,12 @@ const Navbar = (props: props) => {
           </p>
         </Link>
         <div className="flex gap-6 items-center">
-          <Link href="/create-course">Create course</Link>
+          {data?.role == "teacher" ? (
+            <Link href="/create-course">Create Course</Link>
+          ) : (
+            <Link href="/courses">View Courses</Link>
+          )}
+
           <Link href="/chatbot">Chatbot</Link>
           <Link href="/forum">forum</Link>
           <ThemeToggle />
