@@ -71,7 +71,7 @@ const Chats = ({ id, receiverId, show, setShow, name, image }) => {
   };
 
   return (
-    <div className="w-full border h-[88vh] flex flex-col">
+    <div className="w-full border h-full flex flex-col">
       <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center">
         <div className="flex items-center">
           <div className="flex justify-center sm:hidden items-center text-[26px]">

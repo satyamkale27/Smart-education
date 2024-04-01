@@ -37,10 +37,10 @@ const page = () => {
         ></div>
 
         <div
-          className="px-3 overflow-auto no-scrollbar mx-0 w-[100vw] "
+          className="px-3 overflow-auto no-scrollbar h-[100vh] mx-0 w-[100vw] "
           style={{ marginTop: "-128px" }}
         >
-          <div className="py-6 h-full">
+          <div className="pt-6 h-full">
             <div className="flex border relative sm:flex-row flex-col border-grey rounded shadow-lg h-full">
               <div
                 className={`lg:w-[31%] top-0 ease-in-out transition duration-500 ${
