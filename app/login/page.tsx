@@ -11,8 +11,8 @@ import { API } from "../../config";
 const Login = () => {
   const { setAuth } = useAuthContext();
   const [login, setLogin] = useState({
-    email: "test@gmail.com",
-    password: "test",
+    email: "fsayush100@gmail.com",
+    password: "ayush",
   });
   const router = useRouter();
 

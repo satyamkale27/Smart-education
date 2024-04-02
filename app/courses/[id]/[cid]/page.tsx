@@ -35,11 +35,25 @@ const page = ({ params }) => {
 
       <div>
         <div className="flex flex-col justify-center items-center gap-4">
-          <div className="flex  justify-center items-center overflow-hidden w-[600px] h-full rounded-xl">
-            {data?.media.type.startsWith("image") ? (
-              <img src={url + data?.media.content} alt="" />
+          <div className="flex  justify-center items-center overflow-hidden w-[1200px] h-full rounded-xl">
+            {data?.isExternalLink ? (
+              <div className="flex justify-center items-center w-full min-w-[750px] rounded-xl">
+                <iframe
+                  src={data?.ytlink}
+                  alt=""
+                  className="w-full min-h-[450px]"
+                ></iframe>
+                <a href={data?.ytlink}>Link</a>
+                {console.log(data?.ytlink)}
+              </div>
             ) : (
-              <video controls src={url + data?.media.content} alt="" />
+              <div className="flex justify-center w-full min-w-[550px] items-center rounded-xl">
+                {data?.media.type.startsWith("image") ? (
+                  <img src={url + data?.media.content} alt="" />
+                ) : (
+                  <video src={url + data?.media.content} alt="" />
+                )}
+              </div>
             )}
           </div>
           <div>
