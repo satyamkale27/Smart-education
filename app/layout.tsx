@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import { AuthContextProvider } from "./components/AuthWrapper";
 import { SocketContextProvider } from "./components/SocketWrapper";
 import { Provider } from "../components/providers";
+import { Toaster } from "react-hot-toast";
 
 const lexend = Lexend({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(lexend.className, "antialiased min-h-screen")}>
+        <Toaster />
         <AuthContextProvider>
           <SocketContextProvider>
             <Provider>{children}</Provider>

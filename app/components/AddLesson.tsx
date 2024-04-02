@@ -1,6 +1,7 @@
 import { API } from "@/config";
 import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 
 const AddLesson = ({ setEdit, id, f }) => {
@@ -14,6 +15,12 @@ const AddLesson = ({ setEdit, id, f }) => {
 
   const sendLesson = async (e) => {
     e.preventDefault();
+    if (!course.title || !course.desc || (!course.link && !course.media)) {
+      toast.error(
+        "Please Enter Title and Description, and provide either a Yt Link or Media!"
+      );
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append("title", course.title);
@@ -22,8 +29,11 @@ const AddLesson = ({ setEdit, id, f }) => {
       formData.append("ytlink", course.link);
       const res = await axios.post(`${API}/addcontenttoCourse/${id}`, formData);
       if (res.data.success) {
+        toast.success("Lesson Created!");
         setEdit(false);
         f();
+      } else {
+        toast.error(res.data.message || "Something Went Wrong!");
       }
     } catch (error) {
       console.log(error);
@@ -142,7 +152,10 @@ const AddLesson = ({ setEdit, id, f }) => {
             <div className="flex items-center gap-1">
               <input
                 checked={!link}
-                onChange={() => setLink(!link)}
+                onChange={() => {
+                  setLink(!link);
+                  setCourse({ ...course, link: "" });
+                }}
                 type="radio"
                 name="lesson"
                 id="you"
@@ -152,7 +165,10 @@ const AddLesson = ({ setEdit, id, f }) => {
 
             <div className="flex items-center gap-1">
               <input
-                onChange={() => setLink(!link)}
+                onChange={() => {
+                  setLink(!link);
+                  setCourse({ ...course, media: "" });
+                }}
                 checked={link}
                 type="radio"
                 name="lesson"

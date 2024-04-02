@@ -1,9 +1,11 @@
 "use client";
 import AddLesson from "@/app/components/AddLesson";
 import { useAuthContext } from "@/app/components/AuthWrapper";
+import Loading from "@/app/components/Loading";
 import { API, url } from "@/config";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 
@@ -18,7 +20,10 @@ const page = ({ params }) => {
   const { data } = useAuthContext();
   const [courseInformation, setCourseInformation] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [del, setDel] = useState(false);
+  const router = useRouter();
 
+  const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState({
     name: "",
     totalLesson: "",
@@ -44,6 +49,7 @@ const page = ({ params }) => {
           price: res.data.courses.price,
           content: res.data.courses.content,
         });
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -70,11 +76,29 @@ const page = ({ params }) => {
   //     }
   //   };
 
+  const deleteCourse = async () => {
+    try {
+      const res = await axios.delete(`${API}/deleteCourse/${params.id}`);
+      if (res.data.success) {
+        setDel(false);
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDel(false);
+    }
+  };
+
   useEffect(() => {
     if (params.id) {
       f();
     }
   }, [params.id]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -82,6 +106,36 @@ const page = ({ params }) => {
         <div className="fixed inset-0 w-screen h-screen z-50 flex justify-center items-center bg-black/60">
           <div className="flex flex-col ">
             <AddLesson setEdit={setEdit} id={params.id} f={f} />
+          </div>
+        </div>
+      )}
+      {del && (
+        <div className="fixed inset-0 w-screen h-screen z-50 flex justify-center items-center bg-black/60">
+          <div
+            className={`${
+              del
+                ? "h-48 w-80 bg-[#F9F9F9] px-2 dark:bg-[#273142] sm:bg-white shadow-xl rounded-3xl flex flex-col items-center justify-center duration-100"
+                : "h-0 w-0 duration-100 text-[0px] hidden"
+            }`}
+          >
+            <div className="font-semibold">Sure you want to delete course?</div>
+            <div className="text-[12px]">
+              This will delete all content from course!
+            </div>
+            <div className="flex gap-4 mt-4">
+              <div
+                onClick={() => setDel(false)}
+                className="ring-1 cursor-pointer ring-black px-6 py-2 rounded-2xl "
+              >
+                No, cancel
+              </div>
+              <div
+                onClick={() => deleteCourse()}
+                className=" px-6 py-2 cursor-pointer rounded-2xl bg-black text-white "
+              >
+                Yes, Confirm
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -94,14 +148,24 @@ const page = ({ params }) => {
       <div className="flex flex-col bg-gray-100 no-scrollbar">
         <div className="flex justify-between border-2 p-5 items-center">
           <div className="text-2xl font-semibold">Course</div>
-          {data.id == course.userid && (
-            <div
-              className="bg-blue-600 text-white font-semibold p-2 px-4 rounded-xl"
-              onClick={() => setEdit(true)}
-            >
-              <div>Add Lessons</div>
-            </div>
-          )}
+          <div className="flex justify-center items-center gap-3">
+            {data.id == course.userid && (
+              <div
+                className="bg-blue-600 text-white font-semibold p-2 px-4 rounded-xl"
+                onClick={() => setEdit(true)}
+              >
+                <div>Add Lessons</div>
+              </div>
+            )}
+            {data.id == course.userid && (
+              <div
+                className="bg-red-600 text-white font-semibold p-2 px-4 rounded-xl"
+                onClick={() => setDel(true)}
+              >
+                Delete Course
+              </div>
+            )}
+          </div>
         </div>
         <div className="bg-gray-100 dark:bg-gray-800 py-8">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -5,10 +5,12 @@ import { useAuthContext } from "../components/AuthWrapper";
 import Chats from "../components/Chats";
 import { API, url } from "../../config";
 import { formatTime } from "../components/useful";
+import Loading from "../components/Loading";
 
 const page = () => {
   const { data } = useAuthContext();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [receiverId, setReceiverId] = useState("");
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -21,16 +23,20 @@ const page = () => {
         .then((res) => {
           console.log(res.data.users);
           setUsers(res.data.users);
-
           setName(res.data.users[0].fullname);
           setImage(url + res.data.users[0].dp);
           setReceiverId(res.data.users[0]._id);
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
         });
     }
   }, [data]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   console.log(data.dp);
   return (
