@@ -6,7 +6,7 @@ import Input from "./Input";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { formatTime } from "./useful";
 
-const Chats = ({ id, receiverId, show, setShow, name, image }) => {
+const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
   const { socket } = useSocketContext();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -61,6 +61,7 @@ const Chats = ({ id, receiverId, show, setShow, name, image }) => {
       console.log(res.data);
       if (res.data.success) {
         setMessage("");
+        f();
       }
     } catch (error) {
       console.log(error);
@@ -134,7 +135,7 @@ const Chats = ({ id, receiverId, show, setShow, name, image }) => {
       </div>
 
       <div
-        className="flex-1 overflow-auto no-scrollbar"
+        className="flex-1 dark:text-black overflow-auto no-scrollbar"
         style={{ backgroundColor: " #DAD3CC" }}
       >
         <div className="py-2 px-3">

@@ -16,29 +16,31 @@ const page = () => {
   const [image, setImage] = useState("");
   const [show, setShow] = useState(false);
 
+  const f = () => {
+    axios
+      .get(`${API}/v1/getUsers/${data.id}`)
+      .then((res) => {
+        console.log(res.data.users);
+        setUsers(res.data.users);
+        setName(res.data.users[0].fullname);
+        setImage(url + res.data.users[0].dp);
+        setReceiverId(res.data.users[0]._id);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
     if (data?.id) {
-      axios
-        .get(`${API}/v1/getUsers/${data.id}`)
-        .then((res) => {
-          console.log(res.data.users);
-          setUsers(res.data.users);
-          setName(res.data.users[0].fullname);
-          setImage(url + res.data.users[0].dp);
-          setReceiverId(res.data.users[0]._id);
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      f();
     }
   }, [data]);
 
   if (loading) {
     return <Loading />;
   }
-
-  console.log(data.dp);
   return (
     <>
       <div className="w-full h-full">
@@ -143,6 +145,8 @@ const page = () => {
                         <p className="text-grey-dark mt-1 text-sm">
                           {d?.message?._id
                             ? d?.message?.message
+                              ? d?.message?.message
+                              : "File"
                             : d?.message?.message + ` ${d?.fullname}`}
                         </p>
                       </div>
@@ -162,6 +166,7 @@ const page = () => {
                     show={show}
                     setShow={setShow}
                     name={name}
+                    f={f}
                     image={image}
                   />
                 </div>
@@ -173,6 +178,7 @@ const page = () => {
                   show={show}
                   setShow={setShow}
                   name={name}
+                  f={f}
                   image={image}
                 />
               </div>
