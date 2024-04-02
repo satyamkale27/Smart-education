@@ -1,6 +1,7 @@
 import Navbar from "@/app/components/Navbar";
 import Link from "next/link";
 import { RiRobot2Fill } from "react-icons/ri";
+import Homepage from "./components/homepage";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       </div>
       <div>
         <Navbar />
+        <Homepage />
       </div>
     </>
   );
