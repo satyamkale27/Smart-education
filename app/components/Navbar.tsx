@@ -6,6 +6,7 @@ import { useAuthContext } from "../components/AuthWrapper";
 import Cookies from "js-cookie";
 import { FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 const Navbar = () => {
   const { data } = useAuthContext();
   const router = useRouter();
@@ -15,6 +16,7 @@ const Navbar = () => {
     Cookies.remove("refresh_token");
     router.push("/login");
     router.refresh();
+    toast.success("Log out Successfully!");
   };
 
   return (

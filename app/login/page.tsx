@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "../components/AuthWrapper";
 import { API } from "../../config";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { setAuth } = useAuthContext();
@@ -19,6 +20,7 @@ const Login = () => {
   const sendData = async (e) => {
     e.preventDefault();
     if (!login.email || !login.password) {
+      toast.error("Please Enter All Details");
       return;
     }
     try {
@@ -26,10 +28,13 @@ const Login = () => {
       const res = await axios.post(`${API}/login`, data);
       console.log(res.data);
       if (res.data.success) {
+        toast.success("Login Successfull!");
         Cookies.set("access_token", res.data.access_token);
         Cookies.set("refresh_token", res.data.refresh_token);
         setAuth(true);
         router.push("/");
+      } else {
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.log(error);

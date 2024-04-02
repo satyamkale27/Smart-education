@@ -4,21 +4,26 @@ import { API, url } from "@/config";
 import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Loading from "../components/Loading";
 
 const page = () => {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(`${API}/v1/allcourses`)
       .then((res) => {
         setCourses(res.data.courses);
+        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
 
-  console.log(courses);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       <Navbar />

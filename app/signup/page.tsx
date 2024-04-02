@@ -8,6 +8,7 @@ import Link from "next/link";
 import { API } from "../../config";
 import { useAuthContext } from "../components/AuthWrapper";
 import { IoMdAdd } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [login, setLogin] = useState({
@@ -23,6 +24,7 @@ const Signup = () => {
   const sendData = async (e) => {
     e.preventDefault();
     if (!login.email || !login.dp || !login.fullname || !login.password) {
+      toast.error("Please Enter All Details");
       return;
     }
     try {
@@ -36,10 +38,13 @@ const Signup = () => {
       const res = await axios.post(`${API}/createuser`, formData);
       console.log(res.data);
       if (res.data.success) {
+        toast.success("Account Created!");
         Cookies.set("access_token", res.data.access_token);
         Cookies.set("refresh_token", res.data.refresh_token);
         setAuth(true);
         router.push("/");
+      } else {
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.log(error);

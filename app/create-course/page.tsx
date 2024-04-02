@@ -4,6 +4,7 @@ import { useAuthContext } from "../components/AuthWrapper";
 import axios from "axios";
 import { API } from "@/config";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const page = () => {
   const [course, setCourse] = useState({
@@ -21,7 +22,7 @@ const page = () => {
     e.preventDefault();
     const { content, desc, image, price, title } = course;
     if (!content || !desc || !image || !price || !title) {
-      console.log("first");
+      toast.error("Enter All Details!");
       return;
     }
     try {
@@ -35,7 +36,10 @@ const page = () => {
       const res = await axios.post(`${API}/createCourse`, formData);
       console.log(res.data);
       if (res.data.success) {
-        // router.push(`/courses/${data?.id}/${res.data?.id}`);
+        toast.success("Course Created!");
+        router.push(`/my-courses/${data?.id}`);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong!");
       }
     } catch (error) {
       console.log(error);
