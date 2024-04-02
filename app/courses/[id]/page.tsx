@@ -7,6 +7,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 
 interface VideoObj {
@@ -21,6 +22,8 @@ const page = ({ params }) => {
   const [courseInformation, setCourseInformation] = useState([]);
   const [edit, setEdit] = useState(false);
   const [del, setDel] = useState(false);
+  const [vid, setVid] = useState(false);
+  const [videoId, setVideoId] = useState("");
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -58,30 +61,29 @@ const page = ({ params }) => {
 
   const deleteVideos = async (cid, mid) => {
     try {
-      console.log("hello");
+      const res = await axios.delete(
+        `${API}/deleteContentFromCourse/${cid}/${mid}`
+      );
+      if (res.data.success) {
+        f();
+        toast.success("Video Deleted!");
+      } else {
+        toast.error("Something went Wrong!");
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  //   const deleteVideos = async (cid, mid) => {
-  //     try {
-  //       const res = await axios.delete(
-  //         `${API}/deleteContentFromCourse/${cid}/${mid}`
-  //       );
-  //       if (res.data.success) {
-  //         f();
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
 
   const deleteCourse = async () => {
     try {
       const res = await axios.delete(`${API}/deleteCourse/${params.id}`);
       if (res.data.success) {
         setDel(false);
+        toast.success("Course Deleted!");
         router.push("/");
+      } else {
+        toast.error("Something went Wrong!");
       }
     } catch (error) {
       console.log(error);
@@ -106,6 +108,36 @@ const page = ({ params }) => {
         <div className="fixed inset-0 w-screen h-screen z-50 flex justify-center items-center bg-black/60">
           <div className="flex flex-col ">
             <AddLesson setEdit={setEdit} id={params.id} f={f} />
+          </div>
+        </div>
+      )}
+      {vid && (
+        <div className="fixed inset-0 w-screen h-screen z-50 flex justify-center items-center bg-black/60">
+          <div
+            className={`${
+              del
+                ? "h-48 w-80 bg-[#F9F9F9] px-2 dark:bg-[#273142] sm:bg-white shadow-xl rounded-3xl flex flex-col items-center justify-center duration-100"
+                : "h-0 w-0 duration-100 text-[0px] hidden"
+            }`}
+          >
+            <div className="font-semibold">Sure you want to delete Video?</div>
+            <div className="text-[12px]">
+              This will permanently delete the video!
+            </div>
+            <div className="flex gap-4 mt-4">
+              <div
+                onClick={() => setVid(false)}
+                className="ring-1 cursor-pointer ring-black px-6 py-2 rounded-2xl "
+              >
+                No, cancel
+              </div>
+              <div
+                onClick={() => deleteVideos(params.id, videoId)}
+                className=" px-6 py-2 cursor-pointer rounded-2xl bg-black text-white "
+              >
+                Yes, Confirm
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -140,11 +172,6 @@ const page = ({ params }) => {
         </div>
       )}
 
-      {/* {data.id == course.userid && (
-                  <div onClick={() => setEdit(true)}>
-                    <div>Add Lessons</div>
-                  </div>
-                )} */}
       <div className="flex flex-col bg-gray-100 no-scrollbar">
         <div className="flex justify-between border-2 p-5 items-center">
           <div className="text-2xl font-semibold">Course</div>
@@ -178,18 +205,6 @@ const page = ({ params }) => {
                     alt="Course Image"
                   />
                 </div>
-                {/* <div className="flex -mx-2 mb-4">
-                <div className="w-1/2 px-2">
-                  <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
-                    Add to Cart
-                  </button>
-                </div>
-                <div className="w-1/2 px-2">
-                  <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
-                    Add to Wishlist
-                  </button>
-                </div>
-              </div> */}
               </div>
               <div className="md:flex-1 order-1 px-4">
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
@@ -226,7 +241,10 @@ const page = ({ params }) => {
                 videoobj={Information}
                 userid={data?.id}
                 courseId={params.id}
+                setVideoId={setVideoId}
                 courseCreatorId={course.userid}
+                vid={vid}
+                setVid={setVid}
                 i={i}
                 key={Information.title}
               />
@@ -243,15 +261,15 @@ const page = ({ params }) => {
     userid,
     courseCreatorId,
     courseId,
+    vid,
+    setVid,
+    setVideoId,
   }: {
     videoobj: VideoObj;
   }) {
     return (
       <>
-        <Link
-          href={`/courses/${params.id}/${videoobj?._id}`}
-          className="w-3/4 p-2 border-2 border-solid border-black rounded-md dark:border-white "
-        >
+        <div className="w-3/4 px-2 border-2 border-solid border-black rounded-md dark:border-white ">
           <div className="flex items-center gap-4">
             {videoobj.isExternalLink ? (
               <div className="flex justify-center items-center overflow-hidden h-[120px] max-w-[140px]  rounded-xl">
@@ -268,7 +286,7 @@ const page = ({ params }) => {
               </div>
             )}
 
-            <div>
+            <div className=" ">
               <div className="flex items-center gap-2">
                 <span>{i + 1}</span>
                 <h1>{videoobj.title}</h1>
@@ -280,13 +298,26 @@ const page = ({ params }) => {
               </p>
             </div>
           </div>
-        </Link>
-        <div>
-          {userid == courseCreatorId && (
-            <div onClick={() => deleteVideos(courseId, videoobj?._id)}>
-              <MdDelete />
+          <div className="flex justify-end px-2 pb-2 -mt-5 items-center space-x-3">
+            <Link
+              className="bg-blue-400 p-2 px-4 rounded-lg text-white font-semibold"
+              href={`/courses/${params.id}/${videoobj?._id}`}
+            >
+              Watch Lesson
+            </Link>
+            <div className="text-xl text-red-700">
+              {userid == courseCreatorId && (
+                <div
+                  onClick={() => {
+                    setVideoId(videoobj?._id);
+                    setVid(true);
+                  }}
+                >
+                  <MdDelete />
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </>
     );
