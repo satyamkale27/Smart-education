@@ -54,12 +54,12 @@ const Signup = () => {
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
       <div className="container max-w-md mx-auto flex-1 flex flex-col items-center justify-center px-2">
-        <div className="bg-white px-6 py-8  border-2 rounded-xl text-black w-full">
+        <div className="bg-white dark:bg-gray-800 dark:text-white px-6 py-8  border-2 rounded-xl text-black w-full">
           <h1 className="mb-8 text-3xl text-center">Sign up</h1>
           <div className="flex justify-center items-center mb-6">
             <label
               htmlFor="image"
-              className="w-[80px] h-[80px] overflow-hidden border flex justify-center items-center rounded-full"
+              className="w-[80px] h-[80px] overflow-hidden border dark:border-white flex justify-center items-center rounded-full"
             >
               {login.dp ? (
                 <div className="w-[80px] h-[80px]">
@@ -86,7 +86,7 @@ const Signup = () => {
             type="text"
             value={login.fullname}
             onChange={(e) => setLogin({ ...login, fullname: e.target.value })}
-            className="block border border-grey-light w-full p-3 rounded mb-4"
+            className="block border dark:border-white dark:bg-transparent border-grey-light w-full p-3 rounded mb-4"
             name="fullname"
             placeholder="Full Name"
           />
@@ -95,7 +95,7 @@ const Signup = () => {
             type="text"
             value={login.email}
             onChange={(e) => setLogin({ ...login, email: e.target.value })}
-            className="block border border-grey-light w-full p-3 rounded mb-4"
+            className="block border dark:border-white dark:bg-transparent border-grey-light w-full p-3 rounded mb-4"
             name="email"
             placeholder="Email"
           />
@@ -104,7 +104,7 @@ const Signup = () => {
             type="password"
             value={login.password}
             onChange={(e) => setLogin({ ...login, password: e.target.value })}
-            className="block border border-grey-light w-full p-3 rounded mb-4"
+            className="block border dark:border-white dark:bg-transparent border-grey-light w-full p-3 rounded mb-4"
             name="password"
             placeholder="Password"
           />
@@ -138,9 +138,9 @@ const Signup = () => {
             Create Account
           </button>
           <div className="text-grey-dark text-center mt-6">
-            Already have an account?
+            Already have an account?{" "}
             <Link
-              className="no-underline border-b border-blue text-blue"
+              className="hover:underline border-b border-blue text-blue"
               href="/login"
             >
               Log in

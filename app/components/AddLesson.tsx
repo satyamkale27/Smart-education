@@ -43,7 +43,7 @@ const AddLesson = ({ setEdit, id, f }) => {
     <>
       <form
         onSubmit={sendLesson}
-        className=" w-[500px] border rounded-xl p-5 dark:bg-gray-800 bg-white"
+        className=" pp:w-[500px] border rounded-xl p-5 dark:bg-gray-800 bg-white"
       >
         <div className="flex justify-between items-center">
           <h2 className="text-2xl pb-3 font-semibold">Upload Lessons</h2>

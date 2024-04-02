@@ -67,7 +67,7 @@ const page = () => {
                     onChange={(e) =>
                       setCourse({ ...course, title: e.target.value })
                     }
-                    className="px-3 py-2 border-2 outline-none border-[#f1f1f1]"
+                    className="px-3 py-2 border-2 dark:border-white/40 dark:bg-transparent rounded-lg outline-none border-[#f1f1f1]"
                     autocomplete="off"
                   />
                 </div>
@@ -80,7 +80,7 @@ const page = () => {
                       setCourse({ ...course, desc: e.target.value })
                     }
                     id="message"
-                    className="px-3 py-2 h-32 outline-none border-2 outline-none border-[#f1f1f1]"
+                    className="px-3 py-2 h-32 border-2 outline-none  dark:border-white/40 dark:bg-transparent rounded-lg border-[#f1f1f1]"
                   ></textarea>
                 </div>
 
@@ -92,7 +92,7 @@ const page = () => {
                     onChange={(e) =>
                       setCourse({ ...course, price: e.target.value })
                     }
-                    className="px-3 py-2 border-2 outline-none border-[#f1f1f1]"
+                    className="px-3 py-2 border-2 outline-none dark:border-white/40 dark:bg-transparent rounded-lg border-[#f1f1f1]"
                     autocomplete="off"
                   />
                 </div>
@@ -107,7 +107,7 @@ const page = () => {
                     onChange={(e) =>
                       setCourse({ ...course, content: e.target.value })
                     }
-                    className="px-3 py-2 border-2 outline-none border-[#f1f1f1]"
+                    className="px-3 py-2 border-2 outline-none  dark:border-white/40 dark:bg-transparent rounded-lg border-[#f1f1f1]"
                     autocomplete="off"
                   />
                 </div>
@@ -165,7 +165,7 @@ const page = () => {
             <div className=" flex justify-end items-center pt-3">
               <button
                 type="submit"
-                className=" text-white bg-blue-500 border border-red-500 px-4 py-2 transition duration-50 focus:outline-none font-semibold hover:bg-red-500 hover:text-white text-xl cursor-pointer"
+                className=" text-white bg-blue-500 border rounded-lg px-4 py-2 transition duration-50 focus:outline-none font-semibold  hover:text-white text-xl cursor-pointer"
               >
                 Create Course
               </button>

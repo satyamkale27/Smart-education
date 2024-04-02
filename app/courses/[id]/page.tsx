@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { IoAdd } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 
 interface VideoObj {
@@ -106,7 +107,7 @@ const page = ({ params }) => {
     <>
       {edit && (
         <div className="fixed inset-0 w-screen h-screen z-50 flex justify-center items-center bg-black/60">
-          <div className="flex flex-col ">
+          <div className="flex flex-col p-2">
             <AddLesson setEdit={setEdit} id={params.id} f={f} />
           </div>
         </div>
@@ -181,7 +182,10 @@ const page = ({ params }) => {
                 className="bg-blue-600 text-white font-semibold p-2 px-4 rounded-xl"
                 onClick={() => setEdit(true)}
               >
-                <div>Add Lessons</div>
+                <div className="hidden pp:block">Add Lessons</div>
+                <div className="pp:hidden block text-xl">
+                  <IoAdd />
+                </div>
               </div>
             )}
             {data.id == course.userid && (
@@ -189,7 +193,10 @@ const page = ({ params }) => {
                 className="bg-red-600 text-white font-semibold p-2 px-4 rounded-xl"
                 onClick={() => setDel(true)}
               >
-                Delete Course
+                <div className="hidden pp:block">Delete Course</div>
+                <div className="pp:hidden block text-xl">
+                  <MdDelete />
+                </div>
               </div>
             )}
           </div>
@@ -197,16 +204,16 @@ const page = ({ params }) => {
         <div className="bg-gray-100 dark:bg-gray-800 py-8">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row -mx-4">
-              <div className="md:flex-1 order-2 px-4">
+              <div className="md:flex-1 sm:order-2 px-4">
                 <div className="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
                   <img
-                    className="w-full h-full object-fill"
+                    className="w-full h-full rounded-xl object-fill"
                     src={course?.image}
                     alt="Course Image"
                   />
                 </div>
               </div>
-              <div className="md:flex-1 order-1 px-4">
+              <div className="md:flex-1 sm:order-1 px-4">
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                   {course?.name}
                 </h2>
@@ -235,21 +242,23 @@ const page = ({ params }) => {
               </div>
             </div>
           </div>
-          <div className="center flex justify-center gap-4 flex-col items-center">
-            {courseInformation?.map((Information, i) => (
-              <Videos
-                videoobj={Information}
-                userid={data?.id}
-                courseId={params.id}
-                setVideoId={setVideoId}
-                courseCreatorId={course.userid}
-                vid={vid}
-                setVid={setVid}
-                i={i}
-                key={Information.title}
-              />
-            ))}
-          </div>
+          {courseInformation && courseInformation.length > 0 && (
+            <div className="flex mt-5 px-4 justify-center gap-4 flex-col items-center">
+              {courseInformation?.map((Information, i) => (
+                <Videos
+                  videoobj={Information}
+                  userid={data?.id}
+                  courseId={params.id}
+                  setVideoId={setVideoId}
+                  courseCreatorId={course.userid}
+                  vid={vid}
+                  setVid={setVid}
+                  i={i}
+                  key={Information.title}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -269,26 +278,41 @@ const page = ({ params }) => {
   }) {
     return (
       <>
-        <div className="w-3/4 px-2 border-2 border-solid border-black rounded-md dark:border-white ">
-          <div className="flex items-center gap-4">
-            {videoobj.isExternalLink ? (
-              <div className="flex justify-center items-center overflow-hidden h-[120px] max-w-[140px]  rounded-xl">
-                <iframe src={videoobj?.ytlink} alt=""></iframe>
-                {console.log(videoobj?.ytlink)}
-              </div>
-            ) : (
-              <div className="flex justify-center items-center overflow-hidden h-[120px] max-w-[140px] rounded-xl">
-                {videoobj?.media.type.startsWith("image") ? (
-                  <img src={url + videoobj?.media.content} alt="" />
-                ) : (
-                  <video src={url + videoobj?.media.content} alt="" />
-                )}
-              </div>
-            )}
-
-            <div className=" ">
+        <div className="border-2 sm:w-3/4 grid grid-cols-1 border-solid border-black rounded-md dark:border-white ">
+          <div className="flex sm:flex-row flex-col pn:max-sm:w-full pn:max-sm:p-2 px-2 pt-2 items-center gap-4">
+            <div className="pm:max-sm:w-full">
+              {videoobj.isExternalLink ? (
+                <div className="flex justify-center items-center pn:max-sm:w-full sm:h-[120px] sm:max-w-[340px] ">
+                  <iframe
+                    width="100%"
+                    src={videoobj?.ytlink}
+                    className="pn:max-sm:min-w-full"
+                    alt="lesson"
+                  ></iframe>
+                </div>
+              ) : (
+                <div className="flex justify-center items-center overflow-hidden pn:max-sm:w-full sm:h-[120px] sm:max-w-[340px]">
+                  {videoobj?.media.type.startsWith("image") ? (
+                    <div className="w-full">
+                      <img src={url + videoobj?.media.content} alt="" />
+                    </div>
+                  ) : (
+                    <div className="w-full">
+                      <video
+                        width="100%"
+                        controls
+                        height="100%"
+                        src={url + videoobj?.media.content}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className=" text-wrap">
               <div className="flex items-center gap-2">
-                <span>{i + 1}</span>
+                <span className="hidden sm:block">{i + 1}</span>
                 <h1>{videoobj.title}</h1>
               </div>
               <p>
@@ -298,7 +322,7 @@ const page = ({ params }) => {
               </p>
             </div>
           </div>
-          <div className="flex justify-end px-2 pb-2 -mt-5 items-center space-x-3">
+          <div className="flex justify-end px-2 py-2 sm:pb-2 sm:-mt-5 items-center space-x-3">
             <Link
               className="bg-blue-400 p-2 px-4 rounded-lg text-white font-semibold"
               href={`/courses/${params.id}/${videoobj?._id}`}

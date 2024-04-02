@@ -28,21 +28,21 @@ const page = () => {
     <>
       <Navbar />
       <div className="flex justify-center w-full items-center">
-        <div className="grid grid-cols-4 gap-10 mt-4 w-[90%]">
+        <div className="grid grid-cols-1 px-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-4 lg:w-[90%]">
           {courses.map((d, i) => (
             <div key={i} className="max-w-[350px] mx-auto">
               <div className="bg-white shadow-md rounded-lg max-w-sm dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
+                <div>
                   <img
-                    className="rounded-t-lg min-h-[250px] p-4"
+                    className="rounded-t-lg w-[300px] min-h-[250px] p-4"
                     src={url + d?.media.content}
                     alt="product image"
                   />
-                </a>
+                </div>
                 <div className="px-5 pb-5">
-                  <a href="#">
+                  <div>
                     <h3 className="text-gray-900 font-semibold text-xl tracking-tight dark:text-white"></h3>
-                  </a>
+                  </div>
                   <div className="flex items-center mt-2.5 mb-5">
                     <div>
                       {d?.desc.length > 80

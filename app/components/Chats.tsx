@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { API, url } from "../../config";
 import { useSocketContext } from "./SocketWrapper";
 import Input from "./Input";
@@ -8,7 +8,6 @@ import { formatTime } from "./useful";
 
 const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
   const { socket } = useSocketContext();
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const fetchChats = async () => {
     console.log(id, receiverId);
@@ -27,7 +26,6 @@ const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
   useEffect(() => {
     socket?.on("chat-message", (msg) => {
       setMessages((prevChats) => [...prevChats, msg]);
-      console.log(msg);
     });
 
     // return () => {
@@ -60,13 +58,11 @@ const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
       );
       console.log(res.data);
       if (res.data.success) {
-        setMessage("");
         f();
       }
     } catch (error) {
       console.log(error);
     } finally {
-      setMessage("");
     }
   };
 
@@ -175,7 +171,7 @@ const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
                     d.content.type.startsWith("image") ? (
                       <img
                         src={url + d?.content?.content}
-                        className="max-w-[300px]"
+                        className="max-w-[200px] pp:max-w-[300px]"
                       />
                     ) : (
                       <video controls src={url + d?.content?.content}></video>

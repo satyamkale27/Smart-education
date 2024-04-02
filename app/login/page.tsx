@@ -12,8 +12,8 @@ import toast from "react-hot-toast";
 const Login = () => {
   const { setAuth } = useAuthContext();
   const [login, setLogin] = useState({
-    email: "fsayush100@gmail.com",
-    password: "ayush",
+    email: "",
+    password: "",
   });
   const router = useRouter();
 
@@ -43,13 +43,12 @@ const Login = () => {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="relative mx-auto w-full max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10">
+      <div className="relative mx-auto w-full max-w-md dark:bg-gray-800 dark:text-white bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10">
         <div className="w-full">
           <div className="text-center">
-            <h1 className="text-3xl font-semibold text-gray-900">Sign in</h1>
-            <p className="mt-2 text-gray-500">
-              Sign in below to access your account
-            </p>
+            <h1 className="text-3xl font-semibold dark:text-white text-gray-900">
+              Log in
+            </h1>
           </div>
           <div className="mt-5">
             <form onSubmit={sendData} className="flex flex-col gap-3">
@@ -63,7 +62,7 @@ const Login = () => {
                   name="email"
                   id="email"
                   placeholder="Email Address"
-                  className="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                  className="peer mt-1 w-full border-b-2 bg-transparent border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
                   autocomplete="NA"
                 />
                 <label
@@ -83,7 +82,7 @@ const Login = () => {
                   name="password"
                   id="password"
                   placeholder="Password"
-                  className="peer peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                  className="peer peer mt-1 w-full border-b-2 bg-transparent border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
                 />
                 <label
                   for="password"
@@ -97,7 +96,7 @@ const Login = () => {
                   type="submit"
                   className="w-full rounded-md bg-black px-3 py-4 text-white focus:bg-gray-600 focus:outline-none"
                 >
-                  Sign in
+                  Log in
                 </button>
               </div>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
