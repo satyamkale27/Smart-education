@@ -115,7 +115,7 @@ const page = ({ params }) => {
         <div className="fixed inset-0 w-screen h-screen z-50 flex justify-center items-center bg-black/60">
           <div
             className={`${
-              del
+              vid
                 ? "h-48 w-80 bg-[#F9F9F9] px-2 dark:bg-[#273142] sm:bg-white shadow-xl rounded-3xl flex flex-col items-center justify-center duration-100"
                 : "h-0 w-0 duration-100 text-[0px] hidden"
             }`}
@@ -172,8 +172,8 @@ const page = ({ params }) => {
         </div>
       )}
 
-      <div className="flex flex-col bg-gray-100 no-scrollbar">
-        <div className="flex justify-between border-2 p-5 items-center">
+      <div className="flex flex-col bg-gray-100 dark:bg-gray-800  dark:text-white no-scrollbar">
+        <div className="flex justify-between border-b-2 dark:border-white p-5 items-center">
           <div className="text-2xl font-semibold">Course</div>
           <div className="flex justify-center items-center gap-3">
             {data.id == course.userid && (
