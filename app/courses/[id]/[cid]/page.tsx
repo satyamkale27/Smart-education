@@ -31,7 +31,7 @@ const page = ({ params }) => {
 
   return (
     <>
-      <div className="flex justify-center items-center bg-gray-100 w-full">
+      <div className="flex justify-center items-center dark:bg-gray-800 bg-gray-100 w-full">
         <div className=" dark:bg-gray-800 px-4 max-w-[1200px] flex flex-col gap-8 lg:px-8 sm:px-6 py-8">
           <div className="flex flex-col  items-center gap-4">
             <div className="flex justify-center items-center overflow-hidden w-full h-full rounded-xl">
@@ -70,7 +70,7 @@ const page = ({ params }) => {
             </div>
             <div className="">
               <h1 className="text-2xl font-bold">{data?.title}</h1>
-              <p className="mt-2 text-gray-700">{data?.desc}</p>
+              <p className="mt-2">{data?.desc}</p>
             </div>
           </div>
           <div className="max-w-6xl mx-auto ">
@@ -89,7 +89,7 @@ const page = ({ params }) => {
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                   {course?.name}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                <p className="text-gray-600 dark:text-white text-sm mb-4">
                   {course?.desc}
                 </p>
                 <div className="flex mb-4">

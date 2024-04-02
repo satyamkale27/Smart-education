@@ -43,7 +43,7 @@ const AddLesson = ({ setEdit, id, f }) => {
     <>
       <form
         onSubmit={sendLesson}
-        className=" w-[500px] border rounded-xl p-5 bg-white"
+        className=" w-[500px] border rounded-xl p-5 dark:bg-gray-800 bg-white"
       >
         <div className="flex justify-between items-center">
           <h2 className="text-2xl pb-3 font-semibold">Upload Lessons</h2>
@@ -65,7 +65,7 @@ const AddLesson = ({ setEdit, id, f }) => {
               id="name"
               value={course.title}
               onChange={(e) => setCourse({ ...course, title: e.target.value })}
-              className="px-3 py-2 outline-none border-2 rounded-lg "
+              className="px-3 py-2 outline-none border-2 dark:bg-gray-700 rounded-lg "
               autocomplete="off"
             />
           </div>
@@ -79,7 +79,7 @@ const AddLesson = ({ setEdit, id, f }) => {
               value={course.desc}
               onChange={(e) => setCourse({ ...course, desc: e.target.value })}
               id="message"
-              className="px-3 py-2 outline-none border-2 rounded-lg "
+              className="px-3 py-2 outline-none border-2 dark:bg-gray-700 rounded-lg "
             ></textarea>
           </div>
 
@@ -93,7 +93,7 @@ const AddLesson = ({ setEdit, id, f }) => {
                 id="linkt"
                 value={course.link}
                 onChange={(e) => setCourse({ ...course, link: e.target.value })}
-                className="px-3 py-2 outline-none border-2 rounded-lg "
+                className="px-3 py-2 outline-none border-2 dark:bg-gray-700 rounded-lg "
                 autocomplete="off"
               />
             </div>
