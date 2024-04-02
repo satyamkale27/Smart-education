@@ -4,10 +4,38 @@ import { API, url } from "@/config";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const page = ({ params }) => {
-  const [data, setData] = useState();
+interface Course {
+  name: string;
+  desc: string;
+  price: number;
+  content: string;
+  image: string;
+}
+
+interface Media {
+  type: string;
+  content: string;
+}
+
+interface Data {
+  title: string;
+  desc: string;
+  media: Media;
+  isExternalLink: boolean;
+  ytlink?: string;
+}
+
+interface PageProps {
+  params: {
+    id: string;
+    cid: string;
+  };
+}
+
+const Page: React.FC<PageProps> = ({ params }) => {
+  const [data, setData] = useState<Data | null>(null);
   const [loading, setLoading] = useState(true);
-  const [course, setCourse] = useState();
+  const [course, setCourse] = useState<Course | null>(null);
 
   useEffect(() => {
     if (params.id) {
@@ -39,7 +67,6 @@ const page = ({ params }) => {
                 <div className="flex justify-center items-center w-full  sm:min-w-[750px] rounded-xl">
                   <iframe
                     src={data?.ytlink}
-                    alt=""
                     className="w-full min-h-[350px] sm:min-h-[450px]"
                   ></iframe>
                   <a
@@ -61,7 +88,6 @@ const page = ({ params }) => {
                     <video
                       controls
                       src={url + data?.media.content}
-                      alt=""
                       className="w-full"
                     />
                   )}
@@ -120,4 +146,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

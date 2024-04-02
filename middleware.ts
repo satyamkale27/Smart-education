@@ -13,11 +13,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (token && check.isValid && (path === "/login" || path === "/signup")) {
+  if (token && check?.isValid && (path === "/login" || path === "/signup")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (token && !check.isValid) {
+  if (token && !check?.isValid) {
     request.cookies.delete("access_token");
     request.cookies.delete("refresh_token");
     return NextResponse.redirect(new URL("/login", request.url));

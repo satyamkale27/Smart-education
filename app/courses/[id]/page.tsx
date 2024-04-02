@@ -16,11 +16,18 @@ interface VideoObj {
   desc: string;
   photoName: string;
   videosequenceno: number;
+  isExternalLink: boolean;
+  ytlink?: string;
+  _id: string;
+  media: {
+    type: string;
+    content: string;
+  };
 }
 
-const page = ({ params }) => {
+const Page: React.FC<{ params: { id: string } }> = ({ params }) => {
   const { data } = useAuthContext();
-  const [courseInformation, setCourseInformation] = useState([]);
+  const [courseInformation, setCourseInformation] = useState<VideoObj[]>([]);
   const [edit, setEdit] = useState(false);
   const [del, setDel] = useState(false);
   const [vid, setVid] = useState(false);
@@ -60,7 +67,7 @@ const page = ({ params }) => {
       });
   };
 
-  const deleteVideos = async (cid, mid) => {
+  const deleteVideos = async (cid: string, mid: string) => {
     try {
       const res = await axios.delete(
         `${API}/deleteContentFromCourse/${cid}/${mid}`
@@ -275,6 +282,13 @@ const page = ({ params }) => {
     setVideoId,
   }: {
     videoobj: VideoObj;
+    i: number;
+    userid: string;
+    courseCreatorId: string;
+    courseId: string;
+    vid: boolean;
+    setVid: React.Dispatch<React.SetStateAction<boolean>>;
+    setVideoId: React.Dispatch<React.SetStateAction<string>>;
   }) {
     return (
       <>
@@ -287,7 +301,6 @@ const page = ({ params }) => {
                     width="100%"
                     src={videoobj?.ytlink}
                     className="pn:max-sm:min-w-full"
-                    alt="lesson"
                   ></iframe>
                 </div>
               ) : (
@@ -303,7 +316,6 @@ const page = ({ params }) => {
                         controls
                         height="100%"
                         src={url + videoobj?.media.content}
-                        alt=""
                       />
                     </div>
                   )}
@@ -348,4 +360,4 @@ const page = ({ params }) => {
   }
 };
 
-export default page;
+export default Page;

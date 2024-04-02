@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { IoCloudUpload, IoSend } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-const Input = ({ sendMessages }) => {
+
+interface InputProps {
+  sendMessages: (message: string | File) => void;
+}
+
+const Input: React.FC<InputProps> = ({ sendMessages }) => {
   const [message, setMessage] = useState("");
   const [d, setD] = useState("");
   return (
@@ -12,8 +17,11 @@ const Input = ({ sendMessages }) => {
           type="file"
           name="image"
           onChange={(e) => {
-            setD(e.target.files[0]);
-            setMessage(e.target.files[0]);
+            const selectedFile = e.target.files && e.target.files[0];
+            if (selectedFile) {
+              setD(selectedFile.name);
+              setMessage(selectedFile.name); // Or any other property of the file you want to set as the message
+            }
           }}
           className="hidden"
         />
@@ -31,7 +39,7 @@ const Input = ({ sendMessages }) => {
           />
         ) : (
           <div className="flex justify-between items-center w-full">
-            <div>{d?.name}</div>
+            <div>{d}</div>
             <div
               onClick={() => {
                 setD("");

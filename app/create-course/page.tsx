@@ -6,19 +6,27 @@ import { API } from "@/config";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+interface CourseFormData {
+  title: string;
+  desc: string;
+  price: string;
+  image: File | null;
+  content: string;
+}
+
 const page = () => {
-  const [course, setCourse] = useState({
+  const [course, setCourse] = useState<CourseFormData>({
     title: "",
     desc: "",
     price: "",
-    image: "",
+    image: null,
     content: "",
   });
 
   const router = useRouter();
   const { data } = useAuthContext();
 
-  const createCourse = async (e) => {
+  const createCourse = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { content, desc, image, price, title } = course;
     if (!content || !desc || !image || !price || !title) {
@@ -29,7 +37,7 @@ const page = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("desc", desc);
-      formData.append("price", Number(price));
+      formData.append("price", price);
       formData.append("content", content);
       formData.append("image", image);
       formData.append("createdBy", data.id);
@@ -37,7 +45,7 @@ const page = () => {
       console.log(res.data);
       if (res.data.success) {
         toast.success("Course Created!");
-        router.push(`/my-courses/${data?.id}`);
+        router.push(`/my-courses`);
       } else {
         toast.error(res.data.message || "Something Went Wrong!");
       }
@@ -68,7 +76,7 @@ const page = () => {
                       setCourse({ ...course, title: e.target.value })
                     }
                     className="px-3 py-2 border-2 dark:border-white/40 dark:bg-transparent rounded-lg outline-none border-[#f1f1f1]"
-                    autocomplete="off"
+                    autoComplete="off"
                   />
                 </div>
 
@@ -93,7 +101,7 @@ const page = () => {
                       setCourse({ ...course, price: e.target.value })
                     }
                     className="px-3 py-2 border-2 outline-none dark:border-white/40 dark:bg-transparent rounded-lg border-[#f1f1f1]"
-                    autocomplete="off"
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -108,7 +116,7 @@ const page = () => {
                       setCourse({ ...course, content: e.target.value })
                     }
                     className="px-3 py-2 border-2 outline-none  dark:border-white/40 dark:bg-transparent rounded-lg border-[#f1f1f1]"
-                    autocomplete="off"
+                    autoComplete="off"
                   />
                 </div>
 
@@ -152,7 +160,10 @@ const page = () => {
                         id="dropzone-file"
                         name="image"
                         onChange={(e) =>
-                          setCourse({ ...course, image: e.target.files[0] })
+                          setCourse({
+                            ...course,
+                            image: e.target.files ? e.target.files[0] : null,
+                          })
                         }
                         type="file"
                         className="hidden"

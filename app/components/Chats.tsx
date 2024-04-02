@@ -6,9 +6,41 @@ import Input from "./Input";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { formatTime } from "./useful";
 
-const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
+interface ChatsProps {
+  id: string;
+  receiverId: string;
+  show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  image: string;
+  f: () => void;
+}
+
+interface Messages {
+  id: string;
+  text: string;
+  senderId: string;
+  content: {
+    type: string;
+    content: string;
+  } | null;
+  message: string;
+  createdAt: string | Date;
+}
+
+type Message = string | File;
+
+const Chats: React.FC<ChatsProps> = ({
+  id,
+  receiverId,
+  show,
+  setShow,
+  name,
+  image,
+  f,
+}) => {
   const { socket } = useSocketContext();
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Messages[]>([]);
   const fetchChats = async () => {
     console.log(id, receiverId);
     try {
@@ -24,7 +56,7 @@ const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
   };
 
   useEffect(() => {
-    socket?.on("chat-message", (msg) => {
+    socket?.on("chat-message", (msg: Messages) => {
       setMessages((prevChats) => [...prevChats, msg]);
     });
 
@@ -41,7 +73,7 @@ const Chats = ({ id, receiverId, show, setShow, name, image, f }) => {
     }
   }, [id, receiverId]);
 
-  const sendMessages = async (message) => {
+  const sendMessages = async (message: Message) => {
     if (!message) {
       return;
     }

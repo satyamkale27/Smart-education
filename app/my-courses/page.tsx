@@ -7,8 +7,18 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../components/AuthWrapper";
 import Loading from "../components/Loading";
 
-const page = () => {
-  const [courses, setCourses] = useState([]);
+interface Course {
+  _id: string;
+  title: string;
+  desc: string;
+  price: number;
+  media: {
+    content: string;
+  };
+}
+
+const Page: React.FC = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
   const { data } = useAuthContext();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -88,4 +98,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

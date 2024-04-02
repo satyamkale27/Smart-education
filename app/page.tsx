@@ -6,7 +6,7 @@ import Homepage from "./components/Homepage";
 export default function Home() {
   return (
     <>
-      <div className="fixed right-12 bottom-12">
+      <div className="fixed right-8 sm:right-12 z-20 bottom-8 sm:bottom-12">
         <Link href={"/chat-bot"}>
           <RiRobot2Fill className="text-6xl" />
         </Link>

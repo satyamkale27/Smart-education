@@ -4,16 +4,30 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 
-const AddLesson = ({ setEdit, id, f }) => {
-  const [course, setCourse] = useState({
+interface AddLessonProps {
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string;
+  f: () => void;
+}
+
+interface CourseState {
+  title: string;
+  desc: string;
+  media: string | Blob;
+  link: string;
+}
+
+const AddLesson: React.FC<AddLessonProps> = ({ setEdit, id, f }) => {
+  const [course, setCourse] = useState<CourseState>({
     title: "",
     desc: "",
     media: "",
     link: "",
   });
+
   const [link, setLink] = useState(false);
 
-  const sendLesson = async (e) => {
+  const sendLesson = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!course.title || !course.desc || (!course.link && !course.media)) {
       toast.error(
@@ -66,7 +80,7 @@ const AddLesson = ({ setEdit, id, f }) => {
               value={course.title}
               onChange={(e) => setCourse({ ...course, title: e.target.value })}
               className="px-3 py-2 outline-none border-2 dark:bg-gray-700 rounded-lg "
-              autocomplete="off"
+              autoComplete="off"
             />
           </div>
 
@@ -75,7 +89,7 @@ const AddLesson = ({ setEdit, id, f }) => {
               Desc
             </label>
             <textarea
-              rows="4"
+              rows={4}
               value={course.desc}
               onChange={(e) => setCourse({ ...course, desc: e.target.value })}
               id="message"
@@ -94,17 +108,26 @@ const AddLesson = ({ setEdit, id, f }) => {
                 value={course.link}
                 onChange={(e) => setCourse({ ...course, link: e.target.value })}
                 className="px-3 py-2 outline-none border-2 dark:bg-gray-700 rounded-lg "
-                autocomplete="off"
+                autoComplete="off"
               />
             </div>
           ) : (
             <div className="flex flex-col w-full">
               <div className="text-sm font-semibold">Image/Video Lessons</div>
               {course.media ? (
-                <img
-                  src={URL.createObjectURL(course.media)}
-                  className="max-w-[200px] rounded-xl"
-                />
+                typeof course.media === "string" ? (
+                  <img
+                    src={course.media}
+                    className="max-w-[200px] rounded-xl"
+                    alt="Media"
+                  />
+                ) : (
+                  <img
+                    src={URL.createObjectURL(course.media)}
+                    className="max-w-[200px] rounded-xl"
+                    alt="Media"
+                  />
+                )
               ) : (
                 <label
                   htmlFor="dropzone-file"
@@ -137,9 +160,12 @@ const AddLesson = ({ setEdit, id, f }) => {
                   <input
                     id="dropzone-file"
                     name="image"
-                    onChange={(e) =>
-                      setCourse({ ...course, media: e.target.files[0] })
-                    }
+                    onChange={(e) => {
+                      const file = e.target.files && e.target.files[0];
+                      if (file) {
+                        setCourse({ ...course, media: file });
+                      }
+                    }}
                     type="file"
                     className="hidden"
                   />

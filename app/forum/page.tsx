@@ -7,14 +7,30 @@ import { API, url } from "../../config";
 import { formatTime } from "../components/useful";
 import Loading from "../components/Loading";
 
+interface UserData {
+  id: string;
+  dp: string;
+}
+
+interface User {
+  _id: string;
+  fullname: string;
+  dp: string;
+  message?: {
+    _id: string;
+    message: string;
+    createdAt: Date;
+  };
+}
+
 const page = () => {
   const { data } = useAuthContext();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [receiverId, setReceiverId] = useState("");
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [show, setShow] = useState(false);
+  const [receiverId, setReceiverId] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [show, setShow] = useState<boolean>(false);
 
   const f = () => {
     axios

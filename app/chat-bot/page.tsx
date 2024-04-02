@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const page = () => {
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<{ author: any; bot: any }[]>([]);
 
   const getResponse = async () => {
     const res = await axios.get(`http://localhost:8000/prompt/${text}`);

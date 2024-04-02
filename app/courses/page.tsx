@@ -6,8 +6,15 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 
-const page = () => {
-  const [courses, setCourses] = useState([]);
+interface Course {
+  _id: string;
+  media: { content: string };
+  desc: string;
+  price: number;
+}
+
+const Page: React.FC = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
@@ -71,4 +78,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

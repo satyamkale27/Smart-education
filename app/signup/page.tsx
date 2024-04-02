@@ -10,18 +10,29 @@ import { useAuthContext } from "../components/AuthWrapper";
 import { IoMdAdd } from "react-icons/io";
 import toast from "react-hot-toast";
 
+interface LoginData {
+  email: string;
+  password: string;
+  fullname: string;
+  dp: File | null;
+  role: string;
+}
+
 const Signup = () => {
-  const [login, setLogin] = useState({
+  const [login, setLogin] = useState<LoginData>({
     email: "",
     password: "",
     fullname: "",
-    dp: "",
+    dp: null,
     role: "",
   });
+
   const router = useRouter();
   const { setAuth } = useAuthContext();
 
-  const sendData = async (e) => {
+  const sendData = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (!login.email || !login.dp || !login.fullname || !login.password) {
       toast.error("Please Enter All Details");
@@ -79,7 +90,12 @@ const Signup = () => {
               id="image"
               accept="image/*"
               className="hidden"
-              onChange={(e) => setLogin({ ...login, dp: e.target.files[0] })}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  const selectedFile = e.target.files[0];
+                  setLogin({ ...login, dp: selectedFile });
+                }
+              }}
             />
           </div>
           <input
